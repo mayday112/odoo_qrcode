@@ -5,7 +5,7 @@ function code_type_changed(e){
         $('.o_barcode_type_selector').hide()
 }
 
-odoo.define('webcam_qrcode_scan.custom_webcam_scanner', function (require) {
+odoo.define('odoo_qrcode.custom_webcam_scanner', function (require) {
     "use strict";
 
     const FieldChar = require('web.basic_fields').FieldChar;
