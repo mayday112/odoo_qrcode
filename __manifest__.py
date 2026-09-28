@@ -1,24 +1,20 @@
 {
-    'name': "odoo_qrcode",
-    'version': '0.1',
+    'name': 'QR/Barcode Scanner',
+    'version': '18.0.1.0.0',
+    'category': 'Tools',
+    'summary': 'Scan QR/Barcode dengan kamera device',
+    'description': "Add widget='barcode_scanner' to any char/text field to scan QR/barcode via camera.",
+    'author': 'DevSanx',
+    'license': 'LGPL-3',
     'depends': ['base', 'web'],
-    'author': "DevSanx",
-    'category': "Tools",
-    'summary': 'Qrcode/Barcode Scanner',
-    'description': """
-        Scan Barcodes and Qrcodes using device camera
-    """,
-    'data': [
-        'views/assets.xml',
-    ],
+    'data': [],
     'assets': {
         'web.assets_backend': [
-            "odoo_qrcode/static/src/css/webcam_qrcode_scan_styles.css",
-            "odoo_qrcode/static/src/lib/html5-qrcode.min.js",
-            "odoo_qrcode/static/src/lib/quagga.min.js",
-            "odoo_qrcode/static/src/js/barcode_scanner_widget.min.js",
-            "odoo_qrcode/static/src/xml/webcam_qrcode_scan_template.xml"   
-        ]
+            'odoo_qrcode/static/src/xml/qr_scanner_field.xml',
+            'odoo_qrcode/static/src/js/qr_scanner_field.js',
+            'odoo_qrcode/static/src/scss/qr_scanner_field.scss',
+        ],
     },
     'installable': True,
+    'auto_install': False,
 }

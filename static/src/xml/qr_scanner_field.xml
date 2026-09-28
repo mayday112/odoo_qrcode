@@ -1,0 +1,15 @@
+<templates xml:space="preserve">
+    <t t-name="odoo_qrcode.QrScannerField" owl="1">
+        <div class="o_qr_scanner_field d-flex align-items-center gap-1">
+            <CharField t-props="charFieldProps"/>
+            <button t-if="props.readonly === false"
+                    type="button"
+                    class="btn btn-secondary btn-sm o_qr_scan_btn"
+                    title="Scan QR/Barcode"
+                    aria-label="Scan QR/Barcode"
+                    t-on-click="onScanClick">
+                <i class="fa fa-qrcode"/>
+            </button>
+        </div>
+    </t>
+</templates>
