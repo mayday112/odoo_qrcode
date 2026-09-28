@@ -10,6 +10,20 @@
                     t-on-click="onScanClick">
                 <i class="fa fa-qrcode"/>
             </button>
+            <button t-if="props.readonly === false"
+                    type="button"
+                    class="btn btn-secondary btn-sm o_qr_upload_btn"
+                    title="Scan from image file"
+                    aria-label="Scan from image file"
+                    t-on-click="onUploadClick">
+                <i class="fa fa-image"/>
+            </button>
+            <input type="file"
+                   name="qr_image"
+                   class="o_qr_file_input d-none"
+                   accept="image/*"
+                   t-ref="file-input"
+                   t-on-change="onFileChange"/>
         </div>
     </t>
 </templates>

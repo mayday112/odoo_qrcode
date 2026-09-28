@@ -6,8 +6,13 @@ import { registry } from "@web/core/registry";
 import { scanBarcode } from "@web/core/barcode/barcode_dialog";
 import { isBarcodeScannerSupported } from "@web/core/barcode/barcode_video_scanner";
 import { useService } from "@web/core/utils/hooks";
+import { loadJS } from "@web/core/assets";
 import { omit } from "@web/core/utils/objects";
-import { Component } from "@odoo/owl";
+import { Component, useRef } from "@odoo/owl";
+
+// Lib ZXing yang sama yang dipakai scanner native Odoo (bundle modul web).
+// loadJS di-cache per URL, jadi tidak dimuat dua kali meski native sudah load.
+const ZXING_URL = "/web/static/lib/zxing-library/zxing-library.js";
 
 export class QrScannerField extends Component {
     static template = "odoo_qrcode.QrScannerField";
@@ -21,6 +26,7 @@ export class QrScannerField extends Component {
 
     setup() {
         this.notification = useService("notification");
+        this.fileInput = useRef("file-input");
     }
 
     get charFieldProps() {
@@ -39,8 +45,7 @@ export class QrScannerField extends Component {
         try {
             const result = await scanBarcode(this.env, "environment");
             if (result) {
-                this.props.record.update({ [this.props.name]: result });
-                this.notification.add(`Scan berhasil: ${result}`, { type: "success" });
+                this._applyResult(result);
             }
         } catch (e) {
             // user cancel atau permission denied — scanBarcode reject dengan error
@@ -48,6 +53,54 @@ export class QrScannerField extends Component {
                 this.notification.add(`Gagal scan: ${e.message}`, { type: "danger" });
             }
         }
+    }
+
+    onUploadClick() {
+        // Buka dialog pilih file; decodenya di onFileChange
+        this.fileInput.el.click();
+    }
+
+    async onFileChange(ev) {
+        const file = ev.target.files && ev.target.files[0];
+        // reset agar file yang sama bisa dipilih ulang
+        ev.target.value = "";
+        if (!file) {
+            return;
+        }
+        if (!/^image\//i.test(file.type)) {
+            this.notification.add("File harus berupa gambar (PNG, JPG, dll).", {
+                type: "warning",
+                title: "Tidak dapat scan",
+            });
+            return;
+        }
+        let objectUrl;
+        try {
+            await loadJS(ZXING_URL);
+            const reader = new window.ZXing.BrowserMultiFormatReader();
+            objectUrl = URL.createObjectURL(file);
+            const result = await reader.decodeFromImage(undefined, objectUrl);
+            this._applyResult(result.getText());
+        } catch (e) {
+            const msg = (e && e.message) || String(e);
+            if (/No\s+code|not\s+found|NotFound|No\s+QR|Unable/i.test(msg)) {
+                this.notification.add(
+                    "Tidak ada QR/barcode yang terdeteksi pada gambar tersebut.",
+                    { type: "warning", title: "Gagal scan" }
+                );
+            } else {
+                this.notification.add(`Gagal decode gambar: ${msg}`, { type: "danger" });
+            }
+        } finally {
+            if (objectUrl) {
+                URL.revokeObjectURL(objectUrl);
+            }
+        }
+    }
+
+    _applyResult(result) {
+        this.props.record.update({ [this.props.name]: result });
+        this.notification.add(`Scan berhasil: ${result}`, { type: "success" });
     }
 }
 

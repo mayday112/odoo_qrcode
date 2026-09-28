@@ -2,7 +2,12 @@
     .o_field_char {
         flex: 1 1 auto;
     }
-    .o_qr_scan_btn {
+    .o_qr_scan_btn,
+    .o_qr_upload_btn {
         flex: 0 0 auto;
+    }
+    .o_qr_file_input {
+        // tidak pernah ditampilkan; hanya trigger dialog file browser
+        display: none;
     }
 }
