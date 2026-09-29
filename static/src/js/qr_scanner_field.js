@@ -59,8 +59,8 @@ export class QrScannerField extends Component {
     }
 
     onUploadClick() {
-        // Buka dialog pilih file; decodenya di onFileChange
-        this.fileInput.el.click();
+        // signal.ref() diakses dengan memanggilnya: this.fileInput()
+        this.fileInput()?.click();
     }
 
     async onFileChange(ev) {
