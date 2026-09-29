@@ -2,7 +2,7 @@
     <t t-name="odoo_qrcode.QrScannerField" owl="1">
         <div class="o_qr_scanner_field d-flex align-items-center gap-1">
             <CharField t-props="charFieldProps"/>
-            <button t-if="props.readonly === false"
+            <button t-if="!props.readonly"
                     type="button"
                     class="btn btn-secondary btn-sm o_qr_scan_btn"
                     title="Scan QR/Barcode"
@@ -10,7 +10,7 @@
                     t-on-click="onScanClick">
                 <i class="fa fa-qrcode"/>
             </button>
-            <button t-if="props.readonly === false"
+            <button t-if="!props.readonly"
                     type="button"
                     class="btn btn-secondary btn-sm o_qr_upload_btn"
                     title="Scan from image file"
@@ -22,7 +22,7 @@
                    name="qr_image"
                    class="o_qr_file_input d-none"
                    accept="image/*"
-                   t-ref="file-input"
+                   t-ref="fileInput"
                    t-on-change="onFileChange"/>
         </div>
     </t>

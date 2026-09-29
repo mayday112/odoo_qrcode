@@ -8,25 +8,28 @@ import { isBarcodeScannerSupported } from "@web/core/barcode/barcode_video_scann
 import { useService } from "@web/core/utils/hooks";
 import { loadJS } from "@web/core/assets";
 import { omit } from "@web/core/utils/objects";
-import { Component, useRef } from "@odoo/owl";
+import { Component, signal, t, useProps } from "@odoo/owl";
 
 // Lib ZXing yang sama yang dipakai scanner native Odoo (bundle modul web).
 // loadJS di-cache per URL, jadi tidak dimuat dua kali meski native sudah load.
 const ZXING_URL = "/web/static/lib/zxing-library/zxing-library.js";
 
+export const qrScannerFieldProps = {
+    ...standardFieldProps,
+    string: t.string().optional(),
+    placeholder: t.string().optional(),
+};
+
 export class QrScannerField extends Component {
     static template = "odoo_qrcode.QrScannerField";
     static components = { CharField };
-    static props = {
-        ...standardFieldProps,
-        string: { type: String, optional: true },
-        placeholder: { type: String, optional: true },
-    };
     static displayName = "QR/Barcode Scanner";
+
+    props = useProps(qrScannerFieldProps);
+    fileInput = signal.ref();
 
     setup() {
         this.notification = useService("notification");
-        this.fileInput = useRef("file-input");
     }
 
     get charFieldProps() {
@@ -108,9 +111,9 @@ export const qrScannerField = {
     component: QrScannerField,
     displayName: "QR/Barcode Scanner",
     supportedTypes: ["char", "text"],
-    extractProps: ({ attrs }) => ({
+    extractProps: ({ attrs, placeholder }) => ({
         string: attrs.string,
-        placeholder: attrs.placeholder,
+        placeholder,
     }),
 };
 
