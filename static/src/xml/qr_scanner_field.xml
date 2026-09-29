@@ -8,7 +8,7 @@
                     title="Scan QR/Barcode"
                     aria-label="Scan QR/Barcode"
                     t-on-click="this.onScanClick">
-                <i class="fa fa-qrcode"/>
+                <i class="oi" data-icon="qr_code"/>
             </button>
             <button t-if="!this.props.readonly"
                     type="button"
@@ -16,7 +16,7 @@
                     title="Scan from image file"
                     aria-label="Scan from image file"
                     t-on-click="this.onUploadClick">
-                <i class="fa fa-image"/>
+                <i class="oi" data-icon="image"/>
             </button>
             <input type="file"
                    name="qr_image"
