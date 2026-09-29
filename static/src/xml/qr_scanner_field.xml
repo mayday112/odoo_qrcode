@@ -1,21 +1,21 @@
 <templates xml:space="preserve">
     <t t-name="odoo_qrcode.QrScannerField" owl="1">
         <div class="o_qr_scanner_field d-flex align-items-center gap-1">
-            <CharField t-props="charFieldProps"/>
-            <button t-if="!props.readonly"
+            <CharField t-props="this.charFieldProps"/>
+            <button t-if="!this.props.readonly"
                     type="button"
                     class="btn btn-secondary btn-sm o_qr_scan_btn"
                     title="Scan QR/Barcode"
                     aria-label="Scan QR/Barcode"
-                    t-on-click="onScanClick">
+                    t-on-click="this.onScanClick">
                 <i class="fa fa-qrcode"/>
             </button>
-            <button t-if="!props.readonly"
+            <button t-if="!this.props.readonly"
                     type="button"
                     class="btn btn-secondary btn-sm o_qr_upload_btn"
                     title="Scan from image file"
                     aria-label="Scan from image file"
-                    t-on-click="onUploadClick">
+                    t-on-click="this.onUploadClick">
                 <i class="fa fa-image"/>
             </button>
             <input type="file"
@@ -23,7 +23,7 @@
                    class="o_qr_file_input d-none"
                    accept="image/*"
                    t-ref="fileInput"
-                   t-on-change="onFileChange"/>
+                   t-on-change="this.onFileChange"/>
         </div>
     </t>
 </templates>
