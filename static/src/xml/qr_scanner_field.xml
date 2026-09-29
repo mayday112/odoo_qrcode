@@ -22,7 +22,7 @@
                    name="qr_image"
                    class="o_qr_file_input d-none"
                    accept="image/*"
-                   t-ref="fileInput"
+                   t-ref="this.fileInput"
                    t-on-change="this.onFileChange"/>
         </div>
     </t>
